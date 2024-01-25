@@ -9,14 +9,14 @@ class MovieController extends Controller
 {
     public function index()
     {
-        $baseURL = env('MOVIE_DB_URL');
+        $baseURL = env('MOVIE_DB_BASE_URL');
         $imageBaseURL = env('MOVIE_DB_IMAGE_BASE_URL');
         $apiKey = env('MOVIE_DB_API_KEY');
-        $MAX_BANNER = 5;
+        $MAX_BANNER = 3;
 
         // Hit API Banner
-        $bannerResponse = Http::get("{$baseURL}trending/movie/week", [
-            'api_Key' => $apiKey,
+        $bannerResponse = Http::get("{$baseURL}/trending/movie/week", [
+            'api_key' => $apiKey,
         ]);
 
         // Prepare variable
@@ -32,7 +32,7 @@ class MovieController extends Controller
                     // Save response data to new variable
                     array_push($bannerArray, $item);
 
-                    // Max items
+                    // Max 3 items
                     if (count($bannerArray) == $MAX_BANNER){
                         break;
                     }
