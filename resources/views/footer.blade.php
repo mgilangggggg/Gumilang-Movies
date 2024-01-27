@@ -12,7 +12,7 @@
     <div class="w-3/12 flex flex-col">
         <span class="font-inter font-bold text-lg">Website</span>
         <a href="/" class="font-inter text-lg mt-4 hover:text-sky-500 duration-200">Home</a>
-        <a href="/Movies" class="font-inter text-lg mt-4 hover:text-sky-500 duration-200">Movies</a>
+        <a href="/movies" class="font-inter text-lg mt-4 hover:text-sky-500 duration-200">Movies</a>
         <a href="/tv-shows" class="font-inter text-lg mt-4 hover:text-sky-500 duration-200">TV Shows</a>
     </div>
 
