@@ -14,6 +14,7 @@ class MovieController extends Controller
         $apiKey = env('MOVIE_DB_API_KEY');
         $MAX_BANNER = 3;
         $MAX_MOVIE_ITEM = 10;
+        $MAX_TV_SHOWS_ITEM = 10;
 
         // Hit API Banner
         $bannerResponse = Http::get("{$baseURL}/trending/movie/week", [
@@ -59,8 +60,34 @@ class MovieController extends Controller
                     // Save response data to new variable
                     array_push($topMoviesArray, $item);
                     
-                    // Max  items
+                    // Max 10 items
                     if (count($topMoviesArray) == $MAX_MOVIE_ITEM){
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Hit API Top 10 TV Shows
+        $topTVShowsResponse = Http::get("{$baseURL}/tv/top_rated", [
+            'api_key' => $apiKey,
+        ]);
+
+        // Prepare variable
+        $topTVShowArray = [];
+        // Check API response
+        if ($topTVShowsResponse->successful()) {
+            // Check data is null or not
+            $resultArray = $topTVShowsResponse->object()->results;
+
+            if(isset($resultArray)) {
+                // Looping response data
+                foreach ($resultArray as $item){
+                    // Save response data to new variable
+                    array_push($topTVShowArray, $item);
+                    
+                    // Max 10 items
+                    if (count($topTVShowArray) == $MAX_TV_SHOWS_ITEM){
                         break;
                     }
                 }
@@ -72,7 +99,8 @@ class MovieController extends Controller
             'imageBaseURL' => $imageBaseURL,
             'apiKey' => $apiKey,
             'banner' => $bannerArray,
-            'topMovies' => $topMoviesArray
+            'topMovies' => $topMoviesArray,
+            'topTVShows' => $topTVShowArray
         ]);
     }
 }
