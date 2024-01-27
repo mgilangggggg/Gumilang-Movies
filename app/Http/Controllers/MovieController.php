@@ -13,27 +13,54 @@ class MovieController extends Controller
         $imageBaseURL = env('MOVIE_DB_IMAGE_BASE_URL');
         $apiKey = env('MOVIE_DB_API_KEY');
         $MAX_BANNER = 3;
+        $MAX_MOVIE_ITEM = 10;
 
         // Hit API Banner
         $bannerResponse = Http::get("{$baseURL}/trending/movie/week", [
             'api_key' => $apiKey,
         ]);
-
+        
         // Prepare variable
         $bannerArray = [];
         // Check API response
         if ($bannerResponse->successful()){
             // Check data is null or not
             $resultArray = $bannerResponse->object()->results;
-
+            
             if (isset($resultArray)){
                 // Looping response data
                 foreach ($resultArray as $item){
                     // Save response data to new variable
                     array_push($bannerArray, $item);
-
+                    
                     // Max 3 items
                     if (count($bannerArray) == $MAX_BANNER){
+                        break;
+                    }
+                }
+            }
+        }
+        
+        // Hit API Top 10 Movie
+        $topMoviesResponse = Http::get("{$baseURL}/movie/top_rated", [
+            'api_key' => $apiKey,
+        ]);
+
+        // Prepare variable
+        $topMoviesArray = [];
+        // Check API response
+        if ($topMoviesResponse->successful()) {
+            // Check data is null or not
+            $resultArray = $topMoviesResponse->object()->results;
+
+            if(isset($resultArray)) {
+                // Looping response data
+                foreach ($resultArray as $item){
+                    // Save response data to new variable
+                    array_push($topMoviesArray, $item);
+                    
+                    // Max  items
+                    if (count($topMoviesArray) == $MAX_MOVIE_ITEM){
                         break;
                     }
                 }
@@ -44,7 +71,8 @@ class MovieController extends Controller
             'baseURL' => $baseURL,
             'imageBaseURL' => $imageBaseURL,
             'apiKey' => $apiKey,
-            'banner' => $bannerArray
+            'banner' => $bannerArray,
+            'topMovies' => $topMoviesArray
         ]);
     }
 }
